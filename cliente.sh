@@ -19,14 +19,27 @@ if [ "$MSG" != "OK_TURIP" ]
 then
 	echo "ERROR 1: Handshake incorrecto"
 	exit 1
-if
+fi
 
 echo "(5) SEND: nombre de archivos"
 
-echo "FILE _NAME: vaca.vaca" | nc $SERVER_AD $PORT
+FILE_NAME="vaca.vaca"
+
+echo "FILE _NAME: $FILE_NAME" | nc $SERVER_AD $PORT
 
 echo "(6) LISTEN: Comprobacion nombre archivos"
 
 MSG=`nc -l $PORT`
 
-exit 0
+
+
+if [ "$MSG" != "OK_FILE_NAME" ]
+then
+	echo "ERROR 2: Nombre de archivo incorrecto"
+	exit 2
+fi
+
+cat vacas/$FILE_NAME | nc $SERVER_AD $PORT
+
+exit 0 
+
